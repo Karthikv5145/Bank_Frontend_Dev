@@ -154,6 +154,11 @@
         display: none;
       }
     }
+
+    .faded-btn {
+      opacity: 0.5 !important;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -165,26 +170,19 @@
     </div>
 
     <div class="auth-form-side col-md-6 d-flex flex-column justify-content-center">
-      <div class="text-center mb-3">
+      <!-- Role selection and welcome -->
+      <div class="text-center mb-3" id="welcomeSection">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Bank Logo" width="48" height="48" class="mb-2 mx-auto" style="border-radius:8px;box-shadow:0 2px 8px rgba(38,166,154,0.10);object-fit:contain;">
         <h5 class="mb-1" style="font-weight:bold;color:#004d40;">Welcome to Bank Loan Portal</h5>
         <span class="text-muted" style="font-size:0.98rem;">Please select your role and continue</span>
       </div>
-      <div class="d-flex justify-content-center mb-3 btn-group-role" id="roleButtons">
+      <div class="d-flex justify-content-center mb-3" id="topActionBar">
         <button class="btn btn-outline-primary me-2" id="adminBtn"><i class="fas fa-user-shield me-1"></i>Admin</button>
         <button class="btn btn-success" id="customerBtn"><i class="fas fa-user me-1"></i>Customer</button>
+        <button class="btn btn-outline-success d-none" id="registerTopBtn"><i class="fas fa-user-plus me-1"></i>Register</button>
       </div>
-      
-      <ul class="nav nav-tabs nav-fill d-none" id="authTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginTab" type="button" role="tab" aria-controls="loginTab" aria-selected="true"><i class="fas fa-sign-in-alt me-1"></i>Login</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerTab" type="button" role="tab" aria-controls="registerTab" aria-selected="false"><i class="fas fa-user-plus me-1"></i>Register</button>
-        </li>
-      </ul>
-
-      <div class="tab-content mt-4">
+      <!-- Login/Register content, hidden by default -->
+      <div class="tab-content mt-4" id="authTabContent" style="display:none;">
         <div class="tab-pane fade show active" id="loginTab">
           <form id="loginForm" autocomplete="off">
             <div id="loginFields"></div>
@@ -361,63 +359,116 @@
       }
     }
 
+    // Initial state: show only role selection, hide login/register and back button
+    $(function () {
+      $('#authTabContent').hide();
+      $('#welcomeSection').show();
+      $('#adminBtn').removeClass('d-none').removeClass('btn-primary').addClass('btn-outline-primary');
+      $('#customerBtn').removeClass('d-none').removeClass('btn-success').addClass('btn-outline-success');
+      $('#registerTopBtn').addClass('d-none');
+    });
+
+    // When Admin is clicked
     $('#adminBtn').click(function () {
       setAdminFields();
-      $('#adminBtn').removeClass('btn-outline-primary').addClass('btn-primary');
-      $('#customerBtn').removeClass('btn-success').addClass('btn-outline-success');
-      // Always show only login tab
-      $('#authTabs').addClass('d-none');
-      $('#login-tab').addClass('active').attr('aria-selected', true);
+      $('#authTabContent').show();
       $('#loginTab').addClass('show active');
-      $('#register-tab').removeClass('active').attr('aria-selected', false);
       $('#registerTab').removeClass('show active');
-      // Reset checkboxes
+      $('#adminBtn').removeClass('btn-outline-primary').addClass('btn-primary').removeClass('d-none');
+      $('#customerBtn').addClass('d-none');
+      $('#registerTopBtn').addClass('d-none');
+      $('#welcomeSection').hide();
       $('#termsCheck').prop('checked', false);
       $('#termsCheckRegister').prop('checked', false);
       $('#registerBtn').prop('disabled', true);
       updateTermsLabel('admin');
     });
 
+    // When Customer is clicked
     $('#customerBtn').click(function() {
       setCustomerFields();
-      $('#customerBtn').removeClass('btn-outline-success').addClass('btn-success');
-      $('#adminBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-      // Always show only login tab
-      $('#authTabs').addClass('d-none');
-      $('#login-tab').addClass('active').attr('aria-selected', true);
+      $('#authTabContent').show();
       $('#loginTab').addClass('show active');
-      $('#register-tab').removeClass('active').attr('aria-selected', false);
       $('#registerTab').removeClass('show active');
-      // Reset checkboxes
+      $('#customerBtn').removeClass('btn-outline-success').addClass('btn-success').removeClass('d-none');
+      $('#adminBtn').addClass('d-none');
+      $('#registerTopBtn').addClass('d-none');
+      $('#welcomeSection').hide();
       $('#termsCheck').prop('checked', false);
       $('#termsCheckRegister').prop('checked', false);
       $('#registerBtn').prop('disabled', true);
       updateTermsLabel('customer');
     });
 
-    // Register link: show register tab, reset checkbox
-    $('#toRegisterLink').click(function (e) {
-      e.preventDefault();
-      $('#authTabs').removeClass('d-none');
-      $('#login-tab').removeClass('active').attr('aria-selected', false);
+    // Show register view
+    function showRegisterView() {
+      $('#adminBtn').addClass('d-none');
+      $('#customerBtn').addClass('d-none');
+      $('#registerTopBtn').removeClass('d-none');
+      $('#welcomeSection').hide();
+      $('#authTabContent').show();
       $('#loginTab').removeClass('show active');
-      $('#register-tab').addClass('active').attr('aria-selected', true);
       $('#registerTab').addClass('show active');
       $('#termsCheckRegister').prop('checked', false);
       $('#registerBtn').prop('disabled', true);
+    }
+
+    // Show login view (for switching back from register)
+    function showLoginView() {
+      if (role === 'admin') {
+        $('#adminBtn').removeClass('d-none').addClass('btn-primary').removeClass('btn-outline-primary');
+        $('#customerBtn').addClass('d-none');
+      } else {
+        $('#customerBtn').removeClass('d-none').addClass('btn-success').removeClass('btn-outline-success');
+        $('#adminBtn').addClass('d-none');
+      }
+      $('#registerTopBtn').addClass('d-none');
+      $('#welcomeSection').hide();
+      $('#authTabContent').show();
+      $('#loginTab').addClass('show active');
+      $('#registerTab').removeClass('show active');
+      $('#termsCheck').prop('checked', false);
+      $('#loginBtn').prop('disabled', true).addClass('faded-btn');
+    }
+
+    // Register link
+    $('#toRegisterLink').click(function (e) {
+      e.preventDefault();
+      showRegisterView();
     });
-    
-    // Login link: show only login tab, reset checkbox
+
+    // Login link
     $('#toLoginLink').click(function(e) {
       e.preventDefault();
-      $('#authTabs').addClass('d-none');
-      $('#register-tab').removeClass('active').attr('aria-selected', false);
-      $('#registerTab').removeClass('show active');
-      $('#login-tab').addClass('active').attr('aria-selected', true);
-      $('#loginTab').addClass('show active');
-      $('#termsCheck').prop('checked', false);
-      $('#termsCheckRegister').prop('checked', false);
-      $('#registerBtn').prop('disabled', true);
+      showLoginView();
+    });
+
+    // Register button at top
+    $('#registerTopBtn').click(function() {
+      showRegisterView();
+    });
+
+    // Disable Login button if terms not checked
+    $('#termsCheck').on('change', function() {
+      $('#loginBtn').prop('disabled', !this.checked);
+      if (!this.checked) {
+        $('#loginBtn').addClass('faded-btn');
+      } else {
+        $('#loginBtn').removeClass('faded-btn');
+      }
+    });
+
+    // Initial state for login button
+    $('#loginBtn').prop('disabled', true).addClass('faded-btn');
+
+    // Hide both role buttons and show register button at top when on register tab
+    $('#register-tab').on('click', function() {
+      showRegisterView();
+    });
+
+    // Show only role buttons when on login tab
+    $('#login-tab').on('click', function() {
+      showLoginView();
     });
 
     $('#registerForm').submit(function (e) {
@@ -542,6 +593,33 @@
       $('#termsCheck').prop('checked', false);
       $('#termsCheckRegister').prop('checked', false);
       $('#registerBtn').prop('disabled', true);
+    });
+
+    // Function to show customer registration directly and hide role selection
+    function showCustomerRegistration() {
+      role = 'customer';
+      setCustomerFields();
+      $('#authTabContent').show();
+      $('#loginTab').removeClass('show active');
+      $('#registerTab').addClass('show active');
+      $('#customerBtn').addClass('d-none');
+      $('#adminBtn').addClass('d-none');
+      $('#registerTopBtn').removeClass('d-none');
+      // Hide the back button when coming from Get Started
+      $('#backBtn').addClass('d-none');
+      $('#welcomeSection').hide(); // Hide the "Please select your role" section
+      $('#topActionBar').hide();   // Hide the role selection buttons as well
+      $('#termsCheckRegister').prop('checked', false);
+      $('#registerBtn').prop('disabled', true);
+      updateTermsLabel('customer');
+    }
+
+    // On page load, check for role=customer in URL and show registration directly
+    $(function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('role') === 'customer') {
+        showCustomerRegistration();
+      }
     });
   </script>
 </body>
