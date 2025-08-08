@@ -621,6 +621,11 @@
         showCustomerRegistration();
       }
     });
+
+    // Redirect to Home page on refresh
+    if (performance.navigation.type === 1 || performance.getEntriesByType("navigation")[0]?.type === "reload") {
+      window.location.href = "Home.html";
+    }
   </script>
 </body>
 </html>
