@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank Loan Application</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    body {
+      background: linear-gradient(120deg, #e0eafc 0%, #c2e9fb 100%); /* Soft blue gradient for a fresh, appealing look */
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-size: 1.05rem;
+      color: #25344a;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #2a3a4d; /* Deep blue for headings */
+    }
+    .navbar {
+      background: linear-gradient(90deg, #274472 0%, #41729f 100%); /* Rich blue for header */
+      box-shadow: 0 4px 16px rgba(40,62,74,0.10);
+      border-bottom: 2px solid #41729f;
+    }
+    .navbar-brand {
+      color: #fff !important;
+      text-shadow: 0 2px 8px rgba(40,62,74,0.10);
+      background: none;
+    }
+    .navbar .btn-outline-light {
+      color: #fff;
+      border-color: #fff;
+    }
+    .navbar .btn-outline-light:hover {
+      background-color: #2a3a4d;
+      color: #c9d6e3 !important;
+      border-color: #2a3a4d;
+    }
+    .navbar .dropdown-toggle {
+      font-weight: 600;
+      font-size: 1.08rem;
+      border-radius: 8px;
+    }
+    .navbar .dropdown-menu {
+      background: #f5faff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(21,101,192,0.10);
+      border: none;
+    }
+    .navbar .dropdown-header {
+      font-weight: 700;
+      color: #1565c0;
+      font-size: 1.1rem;
+    }
+    .navbar .text-muted {
+      color: #78909c !important;
+    }
+    .loan-section {
+      text-align: center;
+      padding: 48px 20px 32px 20px;
+      background: linear-gradient(120deg, #f6f9ff 0%, #e0eafc 100%); /* Lighter blue for section */
+    }
+    .loan-cards-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    .loan-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(4px) saturate(1.2);
+      box-shadow: 0 8px 32px rgba(40,62,74,0.13), 0 1.5px 6px rgba(221,227,234,0.10);
+      border: 1.5px solid rgba(197,219,245,0.18);
+      transition: transform 0.35s cubic-bezier(.25,.8,.25,1), box-shadow 0.35s, background 0.35s;
+      color: #25344a; /* Sync card font color */
+      padding: 36px 28px 28px 28px;
+      min-width: 260px;
+      max-width: 340px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+    }
+    .loan-card:hover {
+      background: linear-gradient(120deg, #e3f2fd 60%, #b2ebf2 100%);
+      box-shadow: 0 16px 48px rgba(21,101,192,0.22), 0 2px 8px rgba(38,166,154,0.16);
+      transform: translateY(-14px) scale(1.055);
+      border: 2px solid #b2ebf2;
+    }
+    .loan-svg {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 18px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      transition: filter 0.3s;
+      filter: drop-shadow(0 2px 6px rgba(21,101,192,0.12));
+    }
+    .loan-card:hover .loan-svg {
+      filter: drop-shadow(0 4px 12px rgba(21,101,192,0.18));
+    }
+    .loan-card h5 {
+      color: #2a3a4d;
+    }
+    .loan-rate {
+      color: #1976d2;
+      background: #e3eafc;
+    }
+    .loan-card p {
+      color: #4b5a6a;
+    }
+    /* About dropdown micro-animation */
+    .dropdown-menu {
+      animation: dropdownFade 0.4s cubic-bezier(.25,.8,.25,1);
+    }
+    @keyframes dropdownFade {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    /* Subtle animated underline for nav-tabs */
+    .nav-tabs .nav-link.active {
+      border-bottom: 3px solid #1976d2;
+      background: linear-gradient(90deg, #e3f2fd 0%, #b2ebf2 100%);
+      color: #1976d2;
+      font-weight: 700;
+      transition: border-bottom 0.3s, background 0.3s, color 0.3s;
+    }
+    .nav-tabs .nav-link {
+      border-bottom: 3px solid transparent;
+      transition: border-bottom 0.3s, background 0.3s, color 0.3s;
+    }
+    /* Animated CTA button */
+    #getStartedBtn {
+      animation: pulseBtn 1.8s infinite;
+    }
+    @keyframes pulseBtn {
+      0% { box-shadow: 0 0 0 0 rgba(38,166,154,0.18); }
+      70% { box-shadow: 0 0 0 12px rgba(38,166,154,0.08); }
+      100% { box-shadow: 0 0 0 0 rgba(38,166,154,0.18); }
+    }
+  </style>
+</head>
+<body>
+<div id="blurOverlay" class="blur-overlay" style="display:none;"></div>
+
+<nav class="navbar navbar-expand-lg shadow">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Bank Logo" width="44" height="44" class="me-3" style="border-radius:12px;box-shadow:0 2px 8px rgba(38,166,154,0.10);object-fit:cover;">
+      <span>
+        <span style="font-size:2rem;font-weight:800;color:#fff;letter-spacing:1.5px;font-family:'Inter','Segoe UI','Roboto',Arial,sans-serif;text-shadow:0 2px 8px rgba(21,101,192,0.10);">Bank Loan Portal</span>
+        <br>
+        <span style="font-size:1.08rem;color:#e0f7fa;font-weight:600;">Fast, Secure &amp; Reliable Loans</span>
+      </span>
+    </a>
+    <div class="d-flex align-items-center">
+      <div class="dropdown me-2">
+        <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center" type="button" id="aboutDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-circle-info me-2"></i>About
+        </button>
+        <div class="dropdown-menu dropdown-menu-end p-3" style="min-width:320px;">
+          <div class="d-flex align-items-center mb-2">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Bank Logo" width="36" height="36" class="me-2" style="border-radius:8px;box-shadow:0 2px 8px rgba(38,166,154,0.10);object-fit:cover;">
+            <div>
+              <h6 class="dropdown-header mb-0">Bank Loan Portal</h6>
+              <span class="text-muted" style="font-size:0.98rem;">Fast, Secure & Reliable Loans</span>
+            </div>
+          </div>
+          <hr class="my-2">
+          <ul class="list-unstyled mb-1" style="font-size:1.01rem;">
+            <li class="mb-1"><span class="text-success"><i class="fas fa-lock"></i></span> Secure application process</li>
+            <li class="mb-1"><span class="text-success"><i class="fas fa-bolt"></i></span> Fast approval</li>
+            <li class="mb-1"><span class="text-success"><i class="fas fa-users"></i></span> Trusted by thousands of customers</li>
+          </ul>
+          <div class="text-center mt-2">
+            <span class="badge bg-success" style="font-size:1rem;font-weight:600;">24/7 Support</span>
+          </div>
+        </div>
+      </div>
+      <a class="btn btn-outline-light" href="login.html?role=general" style="font-size:1.08rem;font-weight:600;border-radius:8px;box-shadow:0 2px 8px rgba(38,166,154,0.10);">Login/Register</a>
+    </div>
+  </div>
+</nav>
+
+<div id="mainContent">
+  <div class="loan-section">
+    <h2 style="font-weight:900; color:#004d40; letter-spacing:1px;">Explore Our Loan Options</h2>
+    <p style="font-size:1.15rem; color:#00796b;">Choose from our range of competitive loan products designed to meet your financial needs</p>
+    <div class="loan-cards-row">
+      <div class="loan-card">
+        <span class="loan-svg">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="16" width="40" height="24" rx="8" fill="#1976d2"/>
+            <rect x="12" y="20" width="32" height="16" rx="6" fill="#fff"/>
+            <rect x="32" y="26" width="8" height="4" rx="2" fill="#26a69a"/>
+          </svg>
+        </span>
+        <h5>Personal Loan</h5>
+        <p>Flexible loans for personal needs with quick approval.</p>
+      </div>
+      <div class="loan-card">
+        <span class="loan-svg">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="28" width="36" height="12" rx="6" fill="#1976d2"/>
+            <ellipse cx="18" cy="44" rx="4" ry="4" fill="#26a69a"/>
+            <ellipse cx="38" cy="44" rx="4" ry="4" fill="#26a69a"/>
+            <rect x="16" y="24" width="24" height="8" rx="4" fill="#fff"/>
+          </svg>
+        </span>
+        <h5>Vehicle Loan</h5>
+        <p>Affordable loans for new and used vehicles with low interest rates.</p>
+      </div>
+      <div class="loan-card">
+        <span class="loan-svg">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="24" width="28" height="16" rx="6" fill="#1976d2"/>
+            <polygon points="28,12 12,28 44,28" fill="#26a69a"/>
+            <rect x="26" y="32" width="4" height="8" rx="2" fill="#fff"/>
+          </svg>
+        </span>
+        <h5>Home Loan</h5>
+        <p>Competitive rates for buying or renovating your dream home.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container text-center mt-5 mb-5">
+    <div class="p-4 bg-light rounded shadow-sm">
+      <h4 class="mb-3">Ready to Apply?</h4>
+      <p class="mb-4">Join thousands of satisfied customers who have achieved their financial goals with us.</p>
+      <a href="login.html?role=customer" class="btn btn-success btn-lg" id="getStartedBtn">Get Started Today</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

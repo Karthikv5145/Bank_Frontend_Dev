@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login / Register - Bank Loan Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    body {
+      background: linear-gradient(120deg, #e0eafc 0%, #c2e9fb 100%);
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-size: 1.05rem;
+      color: #25344a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #2a3a4d;
+    }
+    .auth-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(40,62,74,0.15), 0 2px 8px rgba(40,62,74,0.08);
+      border: 1px solid rgba(197, 219, 245, 0.3);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+    }
+    .auth-image-side {
+      background: linear-gradient(120deg, #1565c0 0%, #26a69a 100%);
+      color: #fff;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .auth-image-side h2 {
+      color: #fff;
+      font-weight: 800;
+      margin-top: 1rem;
+    }
+    .auth-form-side {
+      padding: 3rem;
+    }
+    .btn-group-role button {
+      box-shadow: 0 2px 8px rgba(21,101,192,0.08);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .btn-group-role button:hover {
+      box-shadow: 0 4px 16px rgba(21,101,192,0.16);
+      transform: scale(1.05);
+    }
+    .btn-success, .btn-outline-success {
+      background: linear-gradient(90deg, #26a69a 0%, #1976d2 100%);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(21,101,192,0.10);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .btn-success:hover, .btn-outline-success:hover {
+      background: linear-gradient(90deg, #1976d2 0%, #26a69a 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(21,101,192,0.18);
+    }
+    .btn-outline-primary {
+      background: linear-gradient(90deg, #e3f2fd 0%, #b2ebf2 100%);
+      color: #1976d2;
+      border: 1.5px solid #1976d2;
+      font-weight: 700;
+      transition: background 0.3s, color 0.3s;
+    }
+    .btn-outline-primary:hover {
+      background: linear-gradient(90deg, #1976d2 0%, #26a69a 100%);
+      color: #fff;
+    }
+    .nav-tabs .nav-link.active {
+      border-bottom: 3px solid #1976d2;
+      background: linear-gradient(90deg, #e3f2fd 0%, #b2ebf2 100%);
+      color: #1976d2;
+      font-weight: 700;
+      transition: border-bottom 0.3s, background 0.3s, color 0.3s;
+    }
+    .nav-tabs .nav-link {
+      border-bottom: 3px solid transparent;
+      transition: border-bottom 0.3s, background 0.3s, color 0.3s;
+    }
+    .input-icon-group {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .input-icon-group .form-control {
+      padding-left: 2.5rem;
+    }
+    .input-icon-group .input-group-text {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: transparent;
+      border: none;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      padding-left: 0.75rem;
+    }
+    .input-icon-group .input-group-text .fa-solid {
+      color: #6c757d;
+    }
+    .password-input-group {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .password-input-group .form-control {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+    .password-input-group .password-icon {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      padding-left: 0.75rem;
+      color: #6c757d;
+      z-index: 2;
+    }
+    .password-input-group .btn-outline-secondary {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      border: none;
+      z-index: 3;
+      background-color: transparent;
+    }
+    
+    @media (max-width: 767.98px) {
+      .auth-image-side {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container row g-0">
+    <div class="auth-image-side col-md-6 d-flex flex-column justify-content-center p-5">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Bank Logo" width="100" height="100" class="mb-3 mx-auto" style="border-radius: 12px; object-fit: contain;">
+      <h2>Your Partner in Financial Growth</h2>
+      <p class="lead mt-3">Secure, flexible, and reliable loans to help you achieve your goals.</p>
+    </div>
+
+    <div class="auth-form-side col-md-6 d-flex flex-column justify-content-center">
+      <div class="text-center mb-3">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Bank Logo" width="48" height="48" class="mb-2 mx-auto" style="border-radius:8px;box-shadow:0 2px 8px rgba(38,166,154,0.10);object-fit:contain;">
+        <h5 class="mb-1" style="font-weight:bold;color:#004d40;">Welcome to Bank Loan Portal</h5>
+        <span class="text-muted" style="font-size:0.98rem;">Please select your role and continue</span>
+      </div>
+      <div class="d-flex justify-content-center mb-3 btn-group-role" id="roleButtons">
+        <button class="btn btn-outline-primary me-2" id="adminBtn"><i class="fas fa-user-shield me-1"></i>Admin</button>
+        <button class="btn btn-success" id="customerBtn"><i class="fas fa-user me-1"></i>Customer</button>
+      </div>
+      
+      <ul class="nav nav-tabs nav-fill d-none" id="authTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginTab" type="button" role="tab" aria-controls="loginTab" aria-selected="true"><i class="fas fa-sign-in-alt me-1"></i>Login</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#registerTab" type="button" role="tab" aria-controls="registerTab" aria-selected="false"><i class="fas fa-user-plus me-1"></i>Register</button>
+        </li>
+      </ul>
+
+      <div class="tab-content mt-4">
+        <div class="tab-pane fade show active" id="loginTab">
+          <form id="loginForm" autocomplete="off">
+            <div id="loginFields"></div>
+            <div class="form-check mb-2 text-start">
+              <input class="form-check-input" type="checkbox" id="termsCheck" required>
+              <label class="form-check-label" for="termsCheck">
+                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
+              </label>
+            </div>
+            <div id="loginError" class="alert alert-danger py-1 px-2 mb-2 d-none"></div>
+            <button type="submit" class="btn btn-success w-100 mt-2" id="loginBtn">
+              <span id="loginSpinner" class="spinner-border spinner-border-sm me-2 d-none"></span>
+              <i class="fas fa-sign-in-alt me-1"></i>Login
+            </button>
+            <div class="text-center mt-3">
+              <span class="text-muted">Don't have an account?</span>
+              <a href="#" id="toRegisterLink" class="btn-link">Register</a>
+            </div>
+          </form>
+        </div>
+
+        <div class="tab-pane fade" id="registerTab">
+          <form id="registerForm" autocomplete="off">
+            <div id="registerFields"></div>
+            <div class="form-check mb-2 text-start">
+              <input class="form-check-input" type="checkbox" id="termsCheckRegister">
+              <label class="form-check-label" for="termsCheckRegister" id="termsLabelRegister">
+                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" id="termsLink">Terms and Conditions</a>
+              </label>
+            </div>
+            <div id="registerError" class="alert alert-danger py-1 px-2 mb-2 d-none"></div>
+            <button type="submit" class="btn btn-success w-100 mt-2" id="registerBtn" disabled>
+              <span id="registerSpinner" class="spinner-border spinner-border-sm me-2 d-none"></span>
+              <i class="fas fa-user-plus me-1"></i>Register
+            </button>
+            <div class="text-center mt-3">
+              <span class="text-muted">Already have an account?</span>
+              <a href="#" id="toLoginLink" class="btn-link">Login</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="height: 300px; overflow-y: scroll;">
+          <p>Welcome to our Bank Loan Portal. By using this service, you agree to the following terms:</p>
+          <ol>
+            <li><strong>Eligibility:</strong> You must be 18 years or older and a resident of India to apply for a loan. All applicants are subject to credit checks and income verification.</li>
+            <li><strong>Loan Application:</strong> All information provided during the application process must be accurate and truthful. Providing false information may result in legal action.</li>
+            <li><strong>Privacy Policy:</strong> We are committed to protecting your privacy. Your personal information will be used for loan processing and internal purposes only, and will not be shared with third parties without your explicit consent, except as required by law.</li>
+            <li><strong>Loan Discretion:</strong> The bank reserves the right to approve or deny any loan application at its sole discretion, regardless of the applicant's credit history or other financial data.</li>
+            <li><strong>Fees and Charges:</strong> Loan approval may be subject to various fees, including processing fees, late payment charges, and other administrative costs. These will be clearly outlined in your loan agreement.</li>
+            <li><strong>Repayment:</strong> You are responsible for making all scheduled loan repayments on time. Failure to do so may result in additional charges, negative credit reporting, and collections activities.</li>
+            <li><strong>Modifications:</strong> The bank may modify these terms and conditions at any time. We will notify you of any significant changes.</li>
+            <li><strong>Governing Law:</strong> This agreement is governed by the laws of India. Any disputes shall be resolved in the courts of that jurisdiction.</li>
+          </ol>
+          <p>By proceeding with your application, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let role = 'customer'; // Default role
+
+    function inputField(id, placeholder, iconClass) {
+      return `
+        <div class="input-icon-group">
+          <input type="text" class="form-control" id="${id}" placeholder="${placeholder}" required>
+          <div class="input-group-text">
+            <i class="${iconClass}"></i>
+          </div>
+        </div>
+      `;
+    }
+
+    function emailField(id, placeholder, iconClass) {
+      return `
+        <div class="input-icon-group">
+          <input type="email" class="form-control" id="${id}" placeholder="${placeholder}" required>
+          <div class="input-group-text">
+            <i class="${iconClass}"></i>
+          </div>
+        </div>
+      `;
+    }
+    
+    function passwordField(id, placeholder) {
+      return `
+        <div class="password-input-group">
+          <span class="password-icon"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" class="form-control" id="${id}" placeholder="${placeholder}" required>
+          <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('${id}', this)">
+            <i class="fa fa-eye"></i>
+          </button>
+        </div>
+      `;
+    }
+
+    window.togglePassword = function(id, btn) {
+      const input = document.getElementById(id);
+      if (input.type === "password") {
+        input.type = "text";
+        btn.innerHTML = '<i class="fa fa-eye-slash"></i>';
+      } else {
+        input.type = "password";
+        btn.innerHTML = '<i class="fa fa-eye"></i>';
+      }
+    };
+
+    function setCustomerFields() {
+      role = 'customer';
+      $('#loginFields').html(`
+        ${emailField('loginEmail', 'Customer Email', 'fa-solid fa-envelope')}
+        ${passwordField('loginPassword', 'Customer Password')}
+      `);
+      $('#registerFields').html(`
+        ${inputField('regFirstName', 'First Name', 'fa-solid fa-user')}
+        ${inputField('regLastName', 'Last Name', 'fa-solid fa-user')}
+        ${emailField('regEmail', 'Email', 'fa-solid fa-envelope')}
+        ${inputField('regMobile', 'Mobile Number', 'fa-solid fa-phone')}
+        ${inputField('regAddress', 'Address', 'fa-solid fa-location-dot')}
+        ${passwordField('regPassword', 'Password')}
+        ${passwordField('regConfirmPassword', 'Confirm Password')}
+      `);
+    }
+
+    function setAdminFields() {
+      role = 'admin';
+      $('#loginFields').html(`
+        ${emailField('loginEmail', 'Admin Email', 'fa-solid fa-envelope')}
+        ${passwordField('loginPassword', 'Admin Password')}
+      `);
+      $('#registerFields').html(`
+        ${inputField('regAdminName', 'Admin Name', 'fa-solid fa-user')}
+        ${emailField('regEmail', 'Admin Email', 'fa-solid fa-envelope')}
+        ${passwordField('regPassword', 'Password')}
+        ${passwordField('regConfirmPassword', 'Confirm Password')}
+      `);
+    }
+    
+    function handleUrlParameters() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedRole = urlParams.get('role');
+
+      if (requestedRole === 'customer') {
+        $('#adminBtn').hide();
+        setCustomerFields();
+        $('#customerBtn').removeClass('btn-outline-success').addClass('btn-success');
+        $('#authTabs').removeClass('d-none');
+        $('#login-tab').removeClass('active').attr('aria-selected', false);
+        $('#loginTab').removeClass('show active');
+        $('#register-tab').addClass('active').attr('aria-selected', true);
+        $('#registerTab').addClass('show active');
+      } else {
+        $('#adminBtn').show();
+        setCustomerFields();
+        $('#customerBtn').removeClass('btn-outline-success').addClass('btn-success');
+        $('#adminBtn').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#authTabs').addClass('d-none');
+      }
+    }
+
+    $('#adminBtn').click(function () {
+      setAdminFields();
+      $('#adminBtn').removeClass('btn-outline-primary').addClass('btn-primary');
+      $('#customerBtn').removeClass('btn-success').addClass('btn-outline-success');
+      // Always show only login tab
+      $('#authTabs').addClass('d-none');
+      $('#login-tab').addClass('active').attr('aria-selected', true);
+      $('#loginTab').addClass('show active');
+      $('#register-tab').removeClass('active').attr('aria-selected', false);
+      $('#registerTab').removeClass('show active');
+      // Reset checkboxes
+      $('#termsCheck').prop('checked', false);
+      $('#termsCheckRegister').prop('checked', false);
+      $('#registerBtn').prop('disabled', true);
+      updateTermsLabel('admin');
+    });
+
+    $('#customerBtn').click(function() {
+      setCustomerFields();
+      $('#customerBtn').removeClass('btn-outline-success').addClass('btn-success');
+      $('#adminBtn').removeClass('btn-primary').addClass('btn-outline-primary');
+      // Always show only login tab
+      $('#authTabs').addClass('d-none');
+      $('#login-tab').addClass('active').attr('aria-selected', true);
+      $('#loginTab').addClass('show active');
+      $('#register-tab').removeClass('active').attr('aria-selected', false);
+      $('#registerTab').removeClass('show active');
+      // Reset checkboxes
+      $('#termsCheck').prop('checked', false);
+      $('#termsCheckRegister').prop('checked', false);
+      $('#registerBtn').prop('disabled', true);
+      updateTermsLabel('customer');
+    });
+
+    // Register link: show register tab, reset checkbox
+    $('#toRegisterLink').click(function (e) {
+      e.preventDefault();
+      $('#authTabs').removeClass('d-none');
+      $('#login-tab').removeClass('active').attr('aria-selected', false);
+      $('#loginTab').removeClass('show active');
+      $('#register-tab').addClass('active').attr('aria-selected', true);
+      $('#registerTab').addClass('show active');
+      $('#termsCheckRegister').prop('checked', false);
+      $('#registerBtn').prop('disabled', true);
+    });
+    
+    // Login link: show only login tab, reset checkbox
+    $('#toLoginLink').click(function(e) {
+      e.preventDefault();
+      $('#authTabs').addClass('d-none');
+      $('#register-tab').removeClass('active').attr('aria-selected', false);
+      $('#registerTab').removeClass('show active');
+      $('#login-tab').addClass('active').attr('aria-selected', true);
+      $('#loginTab').addClass('show active');
+      $('#termsCheck').prop('checked', false);
+      $('#termsCheckRegister').prop('checked', false);
+      $('#registerBtn').prop('disabled', true);
+    });
+
+    $('#registerForm').submit(function (e) {
+      e.preventDefault();
+      $('#registerError').addClass('d-none');
+      $('#registerSpinner').removeClass('d-none');
+
+      const password = $('#regPassword').val();
+      const confirmPassword = $('#regConfirmPassword').val();
+
+      if (password !== confirmPassword) {
+        $('#registerSpinner').addClass('d-none');
+        $('#registerError').text('Passwords do not match.').removeClass('d-none');
+        return;
+      }
+
+      setTimeout(function () {
+        $('#registerSpinner').addClass('d-none');
+        let valid = true;
+        $('#registerFields input').each(function() {
+          if (!$(this).val()) valid = false;
+        });
+        if (!valid) {
+          $('#registerError').text('Please fill all fields.').removeClass('d-none');
+          return;
+        }
+        if (role === 'customer') {
+          const customerID = 'CUST' + Math.floor(Math.random() * 100000);
+          $('#registerError').removeClass('alert-danger').addClass('alert-success').text('Customer Registered! Your ID: ' + customerID).removeClass('d-none');
+        } else {
+          $('#registerError').removeClass('alert-danger').addClass('alert-success').text('Admin Registered Successfully!').removeClass('d-none');
+        }
+        setTimeout(() => {
+          window.location.href = 'index.html'; // Redirect to home page on success
+        }, 1500);
+      }, 800);
+    });
+
+    $('#loginForm').submit(function (e) {
+      e.preventDefault();
+      $('#loginError').addClass('d-none');
+      $('#loginSpinner').removeClass('d-none');
+      
+      setTimeout(function () {
+        $('#loginSpinner').addClass('d-none');
+        if (!$('#loginEmail').val() || !$('#loginPassword').val()) {
+          $('#loginError').text('Please enter both email and password.').removeClass('d-none');
+          return;
+        }
+        $('#loginError').removeClass('alert-danger').addClass('alert-success').text(role.charAt(0).toUpperCase() + role.slice(1) + ' Logged In!').removeClass('d-none');
+        setTimeout(() => {
+          window.location.href = 'index.html'; // Redirect to home page on success
+        }, 1200);
+      }, 800);
+    });
+
+    function updateTermsLabel(role) {
+      if (role === 'admin') {
+        $('#termsLabelRegister').html('I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" id="termsLink">Admin Terms and Conditions</a>');
+        $('#termsModalLabel').text('Admin Terms and Conditions');
+        $('#termsModal .modal-body').html('<p>Welcome to our Bank Loan Portal as an <b>Admin</b>. By using this service, you agree to the following terms:</p><ol><li><strong>Authorization:</strong> You must be an authorized bank administrator. All actions are logged and monitored.</li><li><strong>Data Privacy:</strong> Admins must protect customer data and comply with all privacy regulations.</li><li><strong>System Use:</strong> Use your access only for legitimate banking operations. Unauthorized use may result in legal action.</li><li><strong>Confidentiality:</strong> Do not share your admin credentials. You are responsible for all actions taken under your account.</li><li><strong>Compliance:</strong> Follow all bank policies and regulatory requirements.</li><li><strong>Modifications:</strong> The bank may update these terms at any time. Significant changes will be communicated.</li></ol><p>By proceeding, you acknowledge you have read, understood, and agree to these Admin Terms and Conditions.</p>');
+      } else {
+        $('#termsLabelRegister').html('I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" id="termsLink">Customer Terms and Conditions</a>');
+        $('#termsModalLabel').text('Customer Terms and Conditions');
+        $('#termsModal .modal-body').html('<p>Welcome to our Bank Loan Portal as a <b>Customer</b>. By using this service, you agree to the following terms:</p><ol><li><strong>Eligibility:</strong> You must be 18 years or older and a resident of India to apply for a loan. All applicants are subject to credit checks and income verification.</li><li><strong>Loan Application:</strong> All information provided during the application process must be accurate and truthful. Providing false information may result in legal action.</li><li><strong>Privacy Policy:</strong> We are committed to protecting your privacy. Your personal information will be used for loan processing and internal purposes only, and will not be shared with third parties without your explicit consent, except as required by law.</li><li><strong>Loan Discretion:</strong> The bank reserves the right to approve or deny any loan application at its sole discretion, regardless of the applicant\'s credit history or other financial data.</li><li><strong>Fees and Charges:</strong> Loan approval may be subject to various fees, including processing fees, late payment charges, and other administrative costs. These will be clearly outlined in your loan agreement.</li><li><strong>Repayment:</strong> You are responsible for making all scheduled loan repayments on time. Failure to do so may result in additional charges, negative credit reporting, and collections activities.</li><li><strong>Modifications:</strong> The bank may modify these terms and conditions at any time. We will notify you of any significant changes.</li><li><strong>Governing Law:</strong> This agreement is governed by the laws of India. Any disputes shall be resolved in the courts of that jurisdiction.</li></ol><p>By proceeding, you acknowledge you have read, understood, and agree to these Customer Terms and Conditions.</p>');
+      }
+    }
+
+    // Initial state: checkbox unchecked, button disabled
+    $('#termsCheckRegister').prop('checked', false);
+    $('#registerBtn').prop('disabled', true);
+
+    // Enable register button only if checkbox is checked
+    $('#termsCheckRegister').on('change', function() {
+      $('#registerBtn').prop('disabled', !this.checked);
+    });
+
+    // Update terms label and modal on role switch
+    $('#adminBtn').click(function () {
+      setAdminFields();
+      $('#adminBtn').removeClass('btn-outline-primary').addClass('btn-primary');
+      $('#customerBtn').removeClass('btn-success').addClass('btn-outline-success');
+      // Always show only login tab
+      $('#authTabs').addClass('d-none');
+      $('#login-tab').addClass('active').attr('aria-selected', true);
+      $('#loginTab').addClass('show active');
+      $('#register-tab').removeClass('active').attr('aria-selected', false);
+      $('#registerTab').removeClass('show active');
+      // Reset checkboxes
+      $('#termsCheck').prop('checked', false);
+      $('#termsCheckRegister').prop('checked', false);
+      $('#registerBtn').prop('disabled', true);
+      updateTermsLabel('admin');
+    });
+
+    $('#customerBtn').click(function() {
+      setCustomerFields();
+      $('#customerBtn').removeClass('btn-outline-success').addClass('btn-success');
+      $('#adminBtn').removeClass('btn-primary').addClass('btn-outline-primary');
+      // Always show only login tab
+      $('#authTabs').addClass('d-none');
+      $('#login-tab').addClass('active').attr('aria-selected', true);
+      $('#loginTab').addClass('show active');
+      $('#register-tab').removeClass('active').attr('aria-selected', false);
+      $('#registerTab').removeClass('show active');
+      // Reset checkboxes
+      $('#termsCheck').prop('checked', false);
+      $('#termsCheckRegister').prop('checked', false);
+      $('#registerBtn').prop('disabled', true);
+      updateTermsLabel('customer');
+    });
+
+    // Also update on page load
+    $(function () {
+      $('#authTabs').addClass('d-none');
+      $('#login-tab').addClass('active').attr('aria-selected', true);
+      $('#loginTab').addClass('show active');
+      $('#register-tab').removeClass('active').attr('aria-selected', false);
+      $('#registerTab').removeClass('show active');
+      handleUrlParameters();
+      updateTermsLabel(role);
+      $('#termsCheck').prop('checked', false);
+      $('#termsCheckRegister').prop('checked', false);
+      $('#registerBtn').prop('disabled', true);
+    });
+  </script>
+</body>
+</html>
