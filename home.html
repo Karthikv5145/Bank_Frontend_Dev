@@ -64,14 +64,18 @@
       padding: 48px 20px 32px 20px;
       background: linear-gradient(120deg, #f6f9ff 0%, #e0eafc 100%);
     }
-    .loan-cards-row {
-      display: flex;
-      overflow-x: auto;
-      gap: 40px;
-      flex-wrap: nowrap;
-      padding-bottom: 20px;
-      margin-top: 32px;
-    }
+   .loan-cards-row {
+    display: flex;         /* Use flexbox for alignment */
+    justify-content: center; /* Center the cards within the container */
+    overflow-x: auto;      /* Allow horizontal scrolling on smaller screens if needed */
+    gap: 40px;             /* Keep the space between cards */
+    flex-wrap: nowrap;     /* Prevent cards from wrapping to the next line */
+    padding: 20px;         /* Add padding on all sides for better spacing */
+    margin-top: 32px;
+    /* This makes the scrollbar look better on browsers that support it */
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
     .loan-card {
       background: rgba(255,255,255,0.85);
       backdrop-filter: blur(4px) saturate(1.2);
