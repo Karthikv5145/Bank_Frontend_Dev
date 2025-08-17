@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank Loan Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    body {
+      background: linear-gradient(120deg, #e0eafc 0%, #c2e9fb 100%);
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-size: 1.05rem;
+      color: #25344a;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #2a3a4d;
+    }
+    .navbar {
+      background: linear-gradient(90deg, #274472 0%, #41729f 100%);
+      box-shadow: 0 4px 16px rgba(40,62,74,0.10);
+      border-bottom: 2px solid #41729f;
+    }
+    .navbar-brand {
+      color: #fff !important;
+      text-shadow: 0 2px 8px rgba(40,62,74,0.10);
+      background: none;
+    }
+    .navbar .btn-outline-light {
+      color: #fff;
+      border-color: #fff;
+    }
+    .navbar .btn-outline-light:hover {
+      background-color: #2a3a4d;
+      color: #c9d6e3 !important;
+      border-color: #2a3a4d;
+    }
+    .navbar .dropdown-toggle {
+      font-weight: 600;
+      font-size: 1.08rem;
+      border-radius: 8px;
+    }
+    .navbar .dropdown-menu {
+      background: #f5faff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(21,101,192,0.10);
+      border: none;
+    }
+    .navbar .dropdown-header {
+      font-weight: 700;
+      color: #1565c0;
+      font-size: 1.1rem;
+    }
+    .navbar .text-muted {
+      color: #78909c !important;
+    }
+    .loan-section {
+      text-align: center;
+      padding: 48px 20px 32px 20px;
+      background: linear-gradient(120deg, #f6f9ff 0%, #e0eafc 100%);
+    }
+    .loan-cards-row {
+      display: flex;
+      overflow-x: auto;
+      gap: 40px;
+      flex-wrap: nowrap;
+      padding-bottom: 20px;
+      margin-top: 32px;
+    }
+    .loan-card {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(4px) saturate(1.2);
+      box-shadow: 0 8px 32px rgba(40,62,74,0.13), 0 1.5px 6px rgba(221,227,234,0.10);
+      border: 1.5px solid rgba(197,219,245,0.18);
+      transition: transform 0.35s cubic-bezier(.25,.8,.25,1), box-shadow 0.35s, background 0.35s;
+      color: #25344a;
+      padding: 36px 28px 28px 28px;
+      min-width: 260px;
+      max-width: 340px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-size: 1.08rem;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .loan-card:hover {
+      background: linear-gradient(120deg, #e3f2fd 60%, #b2ebf2 100%);
+      box-shadow: 0 16px 48px rgba(21,101,192,0.22), 0 2px 8px rgba(38,166,154,0.16);
+      transform: translateY(-14px) scale(1.055);
+      border: 2px solid #b2ebf2;
+    }
+    .loan-svg {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 18px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      transition: filter 0.3s;
+      filter: drop-shadow(0 2px 6px rgba(21,101,192,0.12));
+    }
+    .loan-card:hover .loan-svg {
+      filter: drop-shadow(0 4px 12px rgba(21,101,192,0.18));
+    }
+    .loan-card h5 {
+      color: #2a3a4d;
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #1565c0;
+    }
+    .loan-rate {
+      color: #1976d2;
+      background: #e3eafc;
+    }
+    .loan-card p {
+      color: #4b5a6a;
+      font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: #37474f;
+    }
+    .loan-card .loan-svg {
+      transition: transform 0.2s;
+    }
+    .loan-card:hover .loan-svg {
+      transform: scale(1.12) rotate(-6deg);
+    }
+    .dropdown-menu {
+      animation: dropdownFade 0.4s cubic-bezier(.25,.8,.25,1);
+    }
+    @keyframes dropdownFade {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .nav-tabs .nav-link.active {
+      border-bottom: 3px solid #1976d2;
+      background: linear-gradient(90deg, #e3f2fd 0%, #b2ebf2 100%);
+      color: #1976d2;
+      font-weight: 700;
+      transition: border-bottom 0.3s, background 0.3s, color 0.3s;
+    }
+    .nav-tabs .nav-link {
+      border-bottom: 3px solid transparent;
+      transition: border-bottom 0.3s, background 0.3s, color 0.3s;
+    }
+    #getStartedBtn {
+      animation: pulseBtn 1.8s infinite;
+    }
+    @keyframes pulseBtn {
+      0% { box-shadow: 0 0 0 0 rgba(38,166,154,0.18); }
+      70% { box-shadow: 0 0 0 12px rgba(38,166,154,0.08); }
+      100% { box-shadow: 0 0 0 0 rgba(38,166,154,0.18); }
+    }
+    .loan-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 10px;
+      text-align: center;
+      transition: transform 0.35s ease-in-out;
+      transform: translateY(100%);
+    }
+    .loan-card:hover .loan-info {
+      transform: translateY(0);
+      background: linear-gradient(120deg, #b2ebf2 0%, #e3f2fd 100%);
+    }
+    .loan-rate {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1976d2;
+    }
+    .loan-cards-row::-webkit-scrollbar {
+        height: 8px;
+    }
+    .loan-cards-row::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .loan-cards-row::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+    .loan-cards-row::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+    .hero-section {
+        background: linear-gradient(135deg, #1565c0, #26a69a);
+        color: #fff;
+        padding: 80px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        animation: fadeIn 1.5s ease-in-out forwards;
+        animation-delay: 0.5s;
+    }
+    .hero-subtitle {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-top: 1rem;
+        opacity: 0;
+        animation: fadeIn 1.5s ease-in-out forwards;
+        animation-delay: 1.0s;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-content .tab-pane {
+        padding-top: 2rem;
+    }
+
+    .loan-card .loan-icon {
+        font-size: 3rem;
+        color: #1976d2;
+        margin-bottom: 1rem;
+        transition: transform 0.3s, color 0.3s;
+    }
+
+    .loan-card:hover .loan-icon {
+        transform: scale(1.1);
+        color: #26a69a;
+    }
+
+    .nav-link.active {
+        color: #1565c0 !important;
+        font-weight: 700;
+        background-color: transparent !important;
+        border-color: #1565c0 !important;
+        border-bottom: 3px solid;
+    }
+    .nav-link {
+        color: #4b5a6a;
+        font-weight: 600;
+        transition: color 0.3s, border-bottom 0.3s;
+        border: none;
+    }
+    .nav-link:hover {
+        border-bottom: 3px solid #b2ebf2;
+    }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 991.98px) {
+      .navbar-brand span:last-child {
+        display: none;
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+      .nav-link {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+      }
+      .loan-section h2 {
+        font-size: 1.8rem;
+      }
+      .loan-section p {
+        font-size: 1rem;
+      }
+      .loan-card {
+        min-width: 220px;
+        max-width: 280px;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+        .navbar-brand svg {
+            width: 36px;
+            height: 36px;
+        }
+    }
+  </style>
+</head>
+<body>
+<div id="blurOverlay" class="blur-overlay" style="display:none;"></div>
+
+<nav class="navbar navbar-expand-lg shadow">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <span class="me-3" style="display:flex;align-items:center;">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:12px;box-shadow:0 2px 8px rgba(38,166,154,0.10);background:#fff;">
+          <rect x="4" y="10" width="36" height="24" rx="8" fill="#1976d2"/>
+          <rect x="8" y="14" width="28" height="16" rx="6" fill="#fff"/>
+          <circle cx="22" cy="22" r="7" fill="#26a69a" stroke="#1976d2" stroke-width="2"/>
+          <text x="22" y="26" text-anchor="middle" font-size="12" font-family="Arial" fill="#fff" font-weight="bold">₹</text>
+          <rect x="30" y="18" width="6" height="12" rx="2" fill="#1976d2" opacity="0.7"/>
+          <rect x="8" y="18" width="6" height="12" rx="2" fill="#1976d2" opacity="0.7"/>
+        </svg>
+      </span>
+      <span>
+        <span style="font-size:2rem;font-weight:800;color:#fff;letter-spacing:1.5px;font-family:'Inter','Segoe UI','Roboto',Arial,sans-serif;text-shadow:0 2px 8px rgba(21,101,192,0.10);">Bank Loan Portal</span>
+        <br>
+        <span style="font-size:1.08rem;color:#e0f7fa;font-weight:600;">Fast, Secure &amp; Reliable Loans</span>
+      </span>
+    </a>
+    <div class="d-flex align-items-center">
+      <div class="dropdown me-2">
+        <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center" type="button" id="aboutDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-circle-info me-2"></i>About
+        </button>
+        <div class="dropdown-menu dropdown-menu-end p-3" style="min-width:320px;">
+          <div class="d-flex align-items-center mb-2">
+            <span style="display:inline-block;vertical-align:middle;">
+              <svg width="36" height="36" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px;">
+                <rect x="4" y="10" width="36" height="24" rx="8" fill="#1976d2"/>
+                <rect x="8" y="14" width="28" height="16" rx="6" fill="#fff"/>
+                <circle cx="22" cy="22" r="7" fill="#26a69a" stroke="#1976d2" stroke-width="2"/>
+                <text x="22" y="26" text-anchor="middle" font-size="12" font-family="Arial" fill="#fff" font-weight="bold">₹</text>
+                <rect x="30" y="18" width="6" height="12" rx="2" fill="#1976d2" opacity="0.7"/>
+                <rect x="8" y="18" width="6" height="12" rx="2" fill="#1976d2" opacity="0.7"/>
+              </svg>
+            </span>
+            <div>
+              <h6 class="dropdown-header mb-0">Bank Loan Portal</h6>
+              <span class="text-muted" style="font-size:0.98rem;">Fast, Secure & Reliable Loans</span>
+            </div>
+          </div>
+          <hr class="my-2">
+          <ul class="list-unstyled mb-1" style="font-size:1.01rem;">
+            <li class="mb-1"><span class="text-success"><i class="fas fa-lock"></i></span> Secure application process</li>
+            <li class="mb-1"><span class="text-success"><i class="fas fa-bolt"></i></span> Fast approval</li>
+            <li class="mb-1"><span class="text-success"><i class="fas fa-users"></i></span> Trusted by thousands of customers</li>
+          </ul>
+          <div class="text-center mt-2">
+            <span class="badge bg-success" style="font-size:1rem;font-weight:600;">24/7 Support</span>
+          </div>
+        </div>
+      </div>
+      <a class="btn btn-outline-light" href="login.html?role=general" style="font-size:1.08rem;font-weight:600;border-radius:8px;box-shadow:0 2px 8px rgba(38,166,154,0.10);">Login/Register</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-section" id="hero-section">
+    <h1 class="hero-title">Your Financial Journey Starts Here</h1>
+    <p class="hero-subtitle">Get the funding you need to achieve your dreams.</p>
+</div>
+
+<div id="mainContent">
+  <div class="loan-section">
+    <h2 style="font-weight:900; color:#004d40; letter-spacing:1px;">Explore Our Loan Options</h2>
+    <p style="font-size:1.15rem; color:#00796b;">Choose from our range of competitive loan products designed to meet your financial needs</p>
+    <ul class="nav nav-tabs justify-content-center border-0 mb-4" id="loanTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal-loans" type="button" role="tab" aria-controls="personal-loans" aria-selected="true">
+          Personal & Family Loans
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="vehicle-tab" data-bs-toggle="tab" data-bs-target="#vehicle-property-loans" type="button" role="tab" aria-controls="vehicle-property-loans" aria-selected="false">
+          Vehicle & Property Loans
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="business-tab" data-bs-toggle="tab" data-bs-target="#business-education-loans" type="button" role="tab" aria-controls="business-education-loans" aria-selected="false">
+          Business & Education Loans
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="loanTabsContent">
+      <div class="tab-pane fade show active" id="personal-loans" role="tabpanel" aria-labelledby="personal-tab">
+        <div class="loan-cards-row">
+          <a class="loan-card" href="login.html?role=customer&loan=personal">
+            <i class="fa-solid fa-sack-dollar loan-icon"></i>
+            <h5>Personal Loan</h5>
+            <p>Flexible loans for personal needs with quick approval.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">8.5%</span> p.a.
+            </div>
+          </a>
+          <a class="loan-card" href="login.html?role=customer&loan=marriage">
+            <i class="fa-solid fa-ring loan-icon" style="color:#e68532;"></i>
+            <h5>Marriage Loan</h5>
+            <p>Finance your dream wedding with hassle-free loans.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">9.0%</span> p.a.
+            </div>
+          </a>
+          <a class="loan-card" href="login.html?role=customer&loan=medical">
+            <i class="fa-solid fa-hospital loan-icon" style="color:#dc3545;"></i>
+            <h5>Medical Loan</h5>
+            <p>Cover unexpected medical expenses with a quick loan.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">9.8%</span> p.a.
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="vehicle-property-loans" role="tabpanel" aria-labelledby="vehicle-tab">
+        <div class="loan-cards-row">
+          <a class="loan-card" href="login.html?role=customer&loan=vehicle">
+            <i class="fa-solid fa-car loan-icon" style="color:#26a69a;"></i>
+            <h5>Vehicle Loan</h5>
+            <p>Affordable loans for new and used vehicles with low interest rates.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">7.2%</span> p.a.
+            </div>
+          </a>
+          <a class="loan-card" href="login.html?role=customer&loan=home">
+            <i class="fa-solid fa-house-chimney loan-icon" style="color:#1976d2;"></i>
+            <h5>Home Loan</h5>
+            <p>Competitive rates for buying or renovating your dream home.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">6.8%</span> p.a.
+            </div>
+          </a>
+          <a class="loan-card" href="login.html?role=customer&loan=property">
+            <i class="fa-solid fa-building-columns loan-icon" style="color:#5f4585;"></i>
+            <h5>Loan Against Property</h5>
+            <p>Unlock the value of your property for all your needs.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">9.2%</span> p.a.
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="business-education-loans" role="tabpanel" aria-labelledby="business-tab">
+        <div class="loan-cards-row">
+          <a class="loan-card" href="login.html?role=customer&loan=business">
+            <i class="fa-solid fa-briefcase loan-icon" style="color:#004d40;"></i>
+            <h5>Business Loan</h5>
+            <p>Expand your business with flexible financing solutions.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">10.0%</span> p.a.
+            </div>
+          </a>
+          <a class="loan-card" href="login.html?role=customer&loan=education">
+            <i class="fa-solid fa-graduation-cap loan-icon" style="color:#1976d2;"></i>
+            <h5>Education Loan</h5>
+            <p>Secure your future with loans for higher education.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">9.5%</span> p.a.
+            </div>
+          </a>
+          <a class="loan-card" href="login.html?role=customer&loan=startup">
+            <i class="fa-solid fa-rocket loan-icon" style="color:#ffc107;"></i>
+            <h5>Startup Loan</h5>
+            <p>Launch your new venture with our specialized loans.</p>
+            <div class="loan-info">
+              Starting from <span class="loan-rate">11.5%</span> p.a.
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container text-center mt-5 mb-5">
+    <div class="p-4 bg-light rounded shadow-sm">
+      <h4 class="mb-3">Ready to Apply?</h4>
+      <p class="mb-4">Join thousands of satisfied customers who have achieved their financial goals with us.</p>
+      <a href="login.html?role=customer" class="btn btn-success btn-lg" id="getStartedBtn">Get Started Today</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const loanCards = document.querySelectorAll('.loan-card');
+    loanCards.forEach(card => {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        const urlParams = new URLSearchParams(href.split('?')[1]);
+        const loanType = urlParams.get('loan');
+        if (loanType) {
+          localStorage.setItem('chosenLoanType', loanType);
+        }
+        window.location.href = href;
+      });
+    });
+  });
+</script>
+</body>
+</html>
